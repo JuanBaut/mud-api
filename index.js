@@ -30,11 +30,6 @@ app.get('/', (req, res) => {
   res.send(welcomeText);
 });
 
-app.use((err, _req, res) => {
-  console.error(err.stack);
-  res.status(500).send('Something went wrong!');
-});
-
 app.listen(PORT, () =>
   console.log(`\n · Server is running on port ${PORT} · \n`),
 );

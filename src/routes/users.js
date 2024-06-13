@@ -10,13 +10,13 @@ import recoverPassword from '../controllers/user/recoverPassword.js';
 
 const usersRouter = Router();
 
+usersRouter.get('/', getUsers);
+usersRouter.get('/find/:id', getUser);
 usersRouter.post('/login', authUser);
-usersRouter.post('/create', createUser);
-usersRouter.get('/:id', getUser);
-usersRouter.get('/all', getUsers);
-usersRouter.put('/rol/:id', changeUserRole);
+usersRouter.post('/signup', createUser);
+usersRouter.put('/role/:id', changeUserRole);
 usersRouter.put('/recover/:id', recoverPassword);
-usersRouter.put('/activate/:id', changeUserStatus);
-usersRouter.delete('/delet/:id', deleteUser);
+usersRouter.put('/status/:id', changeUserStatus);
+usersRouter.delete('/delete/:id', deleteUser);
 
 export default usersRouter;

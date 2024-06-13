@@ -3,37 +3,32 @@ import Users from '../../modelos/users.js';
 import sendEmail from '../../utils/emails.js';
 
 export default async function createUser(req, res) {
-  const { nombre, email, contrasena, codContrasena, datosDeContacto } =
-    req.body;
+  const { name, lastname, dni, email, phone, password } = req.body;
+
+  if (!name || !lastname || !dni || !email || !phone || !password) {
+    return res.status(400).json({ error: 'Missing fields...' });
+  }
 
   try {
-    let rol = req.session.adminRole;
+    const existingEmail = await Users.findOne({ email });
+    if (existingEmail) throw Error('User with this email already exists...');
 
-    if (!rol) {
-      rol = 'repartidor';
-    }
+    if (!password) throw Error('Password is required...');
+    const passwordHash = await hash(password, 8);
 
-    if (!(nombre || email || contrasena)) {
-      throw Error('Se requiere mas data');
-    }
-
-    const userExistEmail = await Users.findOne({ email });
-    if (userExistEmail) throw Error('Ya existe un usuario con este mail');
-    const passwordHash = await hash(contrasena, 8);
     const user = await Users.create({
-      nombre,
+      name,
+      lastname,
+      dni,
       email,
-      contrasena: passwordHash,
-      codContrasena: codContrasena || null,
-      datosDeContacto: datosDeContacto || {
-        telefono: null,
-        direccion: null,
-      },
+      phone,
+      password: passwordHash,
     });
+
     sendEmail(email, user.id);
 
-    return res.status(201).json({ message: 'Usario creado con exito' });
+    return res.status(201).json({ message: 'User created!' });
   } catch (error) {
-    return res.status(404).json({ error: error.message });
+    return res.status(400).json({ error: error.message });
   }
 }

@@ -1,11 +1,19 @@
 import { Schema, model } from 'mongoose';
 
 const scheme = new Schema({
-  nombre: {
+  name: {
     type: String,
     required: true,
   },
-  apellido: {
+  lastname: {
+    type: String,
+    required: false,
+  },
+  phone: {
+    type: Number,
+    required: false,
+  },
+  address: {
     type: String,
     required: false,
   },
@@ -14,54 +22,45 @@ const scheme = new Schema({
     unique: true,
     required: true,
   },
-  contrasena: {
+  password: {
     type: String,
     required: true,
   },
   dni: {
     type: String,
-    required: false,
+    required: true,
     unique: true,
   },
-  rol: {
+
+  role: {
     type: String,
-    enum: ['administrador', 'repartidor'],
-    default: 'repartidor',
+    enum: ['admin', 'carrier'],
+    default: 'carrier',
     required: true,
   },
-  fecha_registro: {
+  signup_date: {
     type: Date,
     default: Date.now,
   },
-  estado: {
+  status: {
     type: String,
-    enum: ['activo', 'inactivo', 'eliminado'],
-    default: 'inactivo',
+    enum: ['enabled', 'disabled', 'deleted'],
+    default: 'enabled',
   },
-  vehiculo: {
+
+  vehicle: {
     type: String,
-    required: () => this.rol === 'repartidor',
     required: false,
   },
-  ruta: {
+  path: {
     type: [{ lat: Number, lng: Number }],
     default: [],
-    required: () => this.rol === 'repartidor',
+    required: false,
   },
-  cod_contrasena: {
+  password_code: {
     type: String,
     required: false,
     default: null,
-  },
-  datos_de_contacto: {
-    telefono: {
-      type: Number,
-      required: false,
-    },
-    direccion: {
-      type: String,
-      required: false,
-    },
   },
 });
 

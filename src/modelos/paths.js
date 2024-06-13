@@ -1,47 +1,48 @@
 import { Schema, model } from 'mongoose';
 
 const scheme = new Schema({
-  id_usuario_creador: {
+  admin_id: {
     type: Schema.Types.ObjectId,
     ref: 'Users',
     required: true,
   },
-  id_repartidor_asignado: {
+  carrier_id: {
     type: Schema.Types.ObjectId,
     ref: 'Users',
     required: false,
   },
-  origen: {
-    type: { type: String, enum: ['Address'], required: true }, // Changed type to "Address"
-    address: { type: String, required: true }, // Added address property
+  departure: {
+    type: { type: String, enum: ['Address'], required: true },
+    address: { type: String, required: true },
   },
-  destino: {
-    type: { type: String, enum: ['Address'], required: true }, // Changed type to "Address"
-    address: { type: String, required: true }, // Added address property
-  },
-  puntos_intermedios: [
+  stops: [
     {
-      type: { type: String, enum: ['Address'] }, // Changed type to "Address"
-      address: { type: String }, // Added address property
+      type: { type: String, enum: ['Address'] },
+      address: { type: String },
     },
   ],
-  descripcion: { type: String },
-  fecha_creacion: { type: Date, default: Date.now },
-  estado: {
+  destination: {
+    type: { type: String, enum: ['Address'], required: true },
+    address: { type: String, required: true },
+  },
+  info: { type: String },
+  origin_date: { type: Date, default: Date.now },
+  status: {
     type: String,
-    enum: ['en curso', 'completada', 'cancelada'],
+    enum: ['ongoing', 'completed', 'canceled'],
     default: 'en curso',
   },
-  historial_estados: [
+  old_status: [
     {
-      estado: {
+      status: {
         type: String,
-        enum: ['en curso', 'completada', 'cancelada'],
+        enum: ['ongoing', 'completed', 'canceled'],
       },
-      fecha: { type: Date, default: Date.now },
+      date: { type: Date, default: Date.now },
     },
   ],
-  tiempo_estimado_llegada: { type: Date },
+  ETA: { type: Date },
+  // estimated time arrival = tiempo estimado de llegada
 });
 
 const Paths = model('Paths', scheme);
