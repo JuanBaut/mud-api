@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import Users from '../../modelos/users.js';
 
 export default async function authUser(req, res) {
@@ -8,17 +9,40 @@ export default async function authUser(req, res) {
     return res.status(400).json({ error: 'Missing fields...' });
   }
 
-  try {
-    const findUser = await Users.findOne({ email });
-    if (!findUser) throw Error('User with that email not found...');
+  let user;
 
-    const validatePass = await bcrypt.compare(password, findUser.password);
+  try {
+    user = await Users.findOne({ email });
+    if (!user) throw Error('Invalid credentials...');
+
+    const validatePass = await bcrypt.compare(password, user.password);
 
     if (!validatePass)
-      return res.status(201).json({ message: 'Wrong password...' });
-
-    return res.status(201).json({ message: 'User logged in!' });
+      return res.status(401).json({ message: 'Wrong password...' });
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
+
+  let token;
+
+  try {
+    token = jwt.sign(
+      {
+        userId: user.email,
+        email: user.role,
+      },
+      process.env.JWT_KEY,
+      { expiresIn: '2d' },
+    );
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+
+  return res.status(200).json({
+    success: true,
+    data: {
+      message: 'User logged in!',
+      token,
+    },
+  });
 }
