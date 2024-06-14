@@ -1,6 +1,9 @@
 /* eslint-disable no-console */
+
 import { createTransport } from 'nodemailer';
 import signupEmail from './signupEmail.js';
+import 'dotenv/config';
+
 
 const transporter = createTransport({
   host: 'smtp.gmail.com',
@@ -12,14 +15,13 @@ const transporter = createTransport({
   },
 });
 
-const sendEmail = (to, id) => {
-  transporter.sendMail(signupEmail(to, id), (error) => {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('email sent.');
-    }
-  });
+const sendEmail = async (to, id) => {
+  try {
+    const info = await transporter.sendMail(await signupEmail(to, id));
+    console.log('Correo enviado correctamente.', info.response);
+  } catch (error) {
+    console.error('Error al enviar el correo:', error);
+  }
 };
 
 export default sendEmail;
