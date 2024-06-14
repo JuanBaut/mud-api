@@ -39,10 +39,7 @@ export default async function authUser(req, res) {
   }
 
   return res.status(200).json({
-    success: true,
-    data: {
-      message: 'User logged in!',
-      token,
-    },
+    message: 'User logged in!',
+    token,
   });
 }
