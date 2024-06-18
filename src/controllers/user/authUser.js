@@ -13,12 +13,12 @@ export default async function authUser(req, res) {
 
   try {
     user = await Users.findOne({ email });
-    if (!user) throw Error('Invalid credentials...');
+    if (!user) throw Error('Credenciales incorrectas...');
 
     const validatePass = await bcrypt.compare(password, user.password);
 
     if (!validatePass)
-      return res.status(401).json({ error: 'Wrong password...' });
+      return res.status(401).json({ error: 'Contraseña incorrecta...' });
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
@@ -28,9 +28,8 @@ export default async function authUser(req, res) {
   try {
     token = jwt.sign(
       {
-        user: user.name,
+        id: user.id,
         email: user.email,
-        lastname: user.lastname,
       },
       process.env.JWT_KEY,
       { expiresIn: '2d' },

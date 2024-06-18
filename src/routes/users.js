@@ -7,11 +7,13 @@ import deleteUser from '../controllers/user/deleteUser.js';
 import getUser from '../controllers/user/getUser.js';
 import getUsers from '../controllers/user/getUsers.js';
 import recoverPassword from '../controllers/user/recoverPassword.js';
+import getUserData from '../controllers/user/getUserData.js';
 
 const usersRouter = Router();
 
 usersRouter.get('/', getUsers);
 usersRouter.get('/find/:id', getUser);
+usersRouter.get('/profile', getUserData);
 usersRouter.post('/login', authUser);
 usersRouter.post('/signup', createUser);
 usersRouter.put('/role/:id', changeUserRole);
