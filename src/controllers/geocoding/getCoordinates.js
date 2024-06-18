@@ -8,7 +8,7 @@ const getCoordinates = async (req, res) => {
     if (!req.body.address) {
       return res.status(400).json({ error: 'Address is required' });
     }
-    
+
     const { address } = req.body;
 
     const data = await geocode({
@@ -19,13 +19,14 @@ const getCoordinates = async (req, res) => {
     if (data.status.code === 200 && data.results.length > 0) {
       const coordinates = data.results[0].geometry;
       return res.json(coordinates);
-    } else {
-      throw new Error('Address not found');
     }
+
+    throw new Error('Address not found');
   } catch (error) {
-    console.error('Error fetching geocoding data:', error);
+    // console.error('Error fetching geocoding data:', error);
     return res.status(500).json({ error: 'Error fetching the geocoding data' });
   }
 };
 
 export default getCoordinates;
+

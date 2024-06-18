@@ -32,16 +32,7 @@ const scheme = new Schema({
     enum: ['ongoing', 'completed', 'canceled'],
     default: 'en curso',
   },
-  old_status: [
-    {
-      status: {
-        type: String,
-        enum: ['ongoing', 'completed', 'canceled'],
-      },
-      date: { type: Date, default: Date.now },
-    },
-  ],
-  ETA: { type: Date },
+  // ETA: { type: Date },
   // estimated time arrival = tiempo estimado de llegada
 });
 
