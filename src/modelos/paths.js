@@ -1,37 +1,32 @@
 import { Schema, model } from 'mongoose';
 
 const scheme = new Schema({
-  admin_id: {
-    type: Schema.Types.ObjectId,
-    ref: 'Users',
-    required: true,
-  },
-  carrier_id: {
-    type: Schema.Types.ObjectId,
+  // admin_id: {
+  //  type: Schema.Types.ObjectId,
+  //  ref: 'Users',
+  //  required: true,
+  // },
+  carrierDni: {
+    type: Schema.Types.String,
     ref: 'Users',
     required: false,
   },
   departure: {
-    type: { type: String, enum: ['Address'], required: true },
-    address: { type: String, required: true },
+    type: String,
+    required: true,
   },
-  stops: [
-    {
-      type: { type: String, enum: ['Address'] },
-      address: { type: String },
-    },
-  ],
+  stops: [{ type: String }],
   destination: {
-    type: { type: String, enum: ['Address'], required: true },
-    address: { type: String, required: true },
+    type: String,
+    required: true,
   },
-  info: { type: String },
-  origin_date: { type: Date, default: Date.now },
+  notes: { type: String },
   status: {
     type: String,
-    enum: ['ongoing', 'completed', 'canceled'],
-    default: 'en curso',
+    enum: ['pending', 'in-progress', 'completed'],
+    default: 'pending',
   },
+  origin_date: { type: Date, default: Date.now },
   // ETA: { type: Date },
   // estimated time arrival = tiempo estimado de llegada
 });
