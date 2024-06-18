@@ -18,7 +18,7 @@ export default async function authUser(req, res) {
     const validatePass = await bcrypt.compare(password, user.password);
 
     if (!validatePass)
-      return res.status(401).json({ message: 'Wrong password...' });
+      return res.status(401).json({ error: 'Wrong password...' });
   } catch (error) {
     return res.status(400).json({ error: error.message });
   }
@@ -28,8 +28,9 @@ export default async function authUser(req, res) {
   try {
     token = jwt.sign(
       {
-        userId: user.email,
-        email: user.role,
+        user: user.name,
+        email: user.email,
+        lastname: user.lastname,
       },
       process.env.JWT_KEY,
       { expiresIn: '2d' },
