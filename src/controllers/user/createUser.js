@@ -10,8 +10,11 @@ export default async function createUser(req, res) {
   }
 
   try {
+    const existingDni = await Users.findOne({ dni });
+    if (existingDni) throw Error('Existe una cuenta con este DNI...');
+
     const existingEmail = await Users.findOne({ email });
-    if (existingEmail) throw Error('User with this email already exists...');
+    if (existingEmail) throw Error('Existe una cuenta con este correo...');
 
     if (!password) throw Error('Password is required...');
     const passwordHash = await hash(password, 8);

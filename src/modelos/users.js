@@ -29,9 +29,7 @@ const scheme = new Schema({
   dni: {
     type: String,
     required: true,
-    unique: true,
   },
-
   role: {
     type: String,
     enum: ['admin', 'carrier'],
