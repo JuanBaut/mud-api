@@ -1,6 +1,5 @@
 import { hash } from 'bcrypt';
 import Users from '../../modelos/users.js';
-import sendEmail from '../../utils/emails.js';
 
 export default async function createUser(req, res) {
   const { name, lastname, dni, email, phone, password } = req.body;
@@ -19,7 +18,7 @@ export default async function createUser(req, res) {
     if (!password) throw Error('Password is required...');
     const passwordHash = await hash(password, 8);
 
-    const user = await Users.create({
+    await Users.create({
       name,
       lastname,
       dni,
@@ -27,8 +26,6 @@ export default async function createUser(req, res) {
       phone,
       password: passwordHash,
     });
-
-    sendEmail(email, user.id);
 
     return res.status(201).json({ message: 'User created!' });
   } catch (error) {
